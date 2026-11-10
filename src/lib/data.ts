@@ -1,0 +1,4 @@
+import {addDoc,collection,limit,onSnapshot,orderBy,query,serverTimestamp,where,type QueryConstraint} from "firebase/firestore";
+import {db} from "./firebase";import type {PortalUser} from "./types";
+export function watchRecords<T extends Record<string,unknown>>(name:string,user:PortalUser,admin:boolean,onData:(v:(T&{id:string})[])=>void,onError:(v:string)=>void){const c:QueryConstraint[]=[];if(!admin&&user.organizationId)c.push(where("organizationId","==",user.organizationId));if(!admin&&!user.organizationId){onData([]);return ()=>undefined;}c.push(orderBy("updatedAt","desc"),limit(100));return onSnapshot(query(collection(db,name),...c),s=>onData(s.docs.map(d=>({id:d.id,...d.data()}) as T&{id:string})),()=>onError("Could not load records. Check connection and Firestore permissions."));}
+export async function createRecord(name:string,data:Record<string,unknown>){return addDoc(collection(db,name),{...data,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});}
