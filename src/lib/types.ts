@@ -1,0 +1,1 @@
+export type Role="founder"|"admin"|"team"|"client";export interface PortalUser{uid:string;email:string;displayName:string;role:Role;organizationId?:string}export const isAdminRole=(r?:Role)=>r==="admin"||r==="founder";
