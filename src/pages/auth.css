@@ -1,1 +1,5 @@
-.link-button{border:0;background:transparent;color:#26765e;font-size:11px;font-weight:700;text-decoration:underline;text-underline-offset:3px;padding:3px 0;justify-self:center}.notice{background:#edf4ee;color:#315e45;padding:10px;font-size:11px;line-height:1.5}
+.google-button{width:100%;min-height:46px;border:1px solid #d8e0dc;background:#fff;color:#173b32;font:600 13px inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:18px 0 14px}
+.google-button:hover{background:#f7faf8;border-color:#9bb8aa}
+.google-button:disabled{opacity:.65;cursor:wait}
+.login-divider{display:flex;align-items:center;gap:12px;color:#84918b;font-size:9px;letter-spacing:.12em;margin:4px 0 16px}
+.login-divider:before,.login-divider:after{content:"";height:1px;background:#e4eae6;flex:1}
