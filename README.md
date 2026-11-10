@@ -12,23 +12,37 @@ Standalone React + TypeScript + Vite application using npm, Firebase Authenticat
 ## Install and run
 ```bash
 npm install
-cp .env.example .env
 npm run dev
 ```
-Add the Firebase Web App config values to `.env`. Never add service-account JSON or private keys.
 
-## Firebase setup
-1. Enable Email/Password in Authentication → Sign-in method.
+Production build:
+```bash
+npm run build
+```
+
+Firebase Web App configuration is set in `src/lib/firebase.ts`. This web config is public client configuration. Never add Firebase service-account JSON, private keys, admin SDK credentials or passwords to source control.
+
+## Firebase Console setup
+1. Open Authentication → Sign-in method → enable Email/Password.
 2. Create a Firestore database.
-3. Publish `firestore.rules` in Firestore → Rules.
+3. Open Firestore → Rules and publish the contents of `firestore.rules`.
 4. Create invited users in Firebase Authentication. The app has no public registration form.
-5. For each user, create `users/{uid}` in Firestore using the exact Authentication UID.
+5. For each user, create a matching `users/{uid}` document in Firestore.
 
 ### Bootstrap founder/admin
-Create the founder in Authentication, copy the UID, then create `users/{uid}` with fields: `displayName` (string), `email` (string), `role` (string `founder`), `organizationId` (empty string). Do this from Firebase Console. Users cannot set their own role.
+Create the founder in Authentication, copy the UID, then create `users/{uid}` in Firestore with:
+- `displayName`: string
+- `email`: string
+- `role`: `founder`
+- `organizationId`: empty string
+
+Do this from Firebase Console. Users cannot set their own role.
 
 ### Add a client
-Create an Authentication user. Create `organizations/{orgId}` with a `name`. Create `organizations/{orgId}/members/{uid}`. Create `users/{uid}` with `displayName`, `email`, `role: client`, and the matching `organizationId`.
+1. Create the invited user in Firebase Authentication.
+2. Create `organizations/{orgId}` with a `name` field.
+3. Create `organizations/{orgId}/members/{uid}`.
+4. Create `users/{uid}` with `displayName`, `email`, `role: client`, and the matching `organizationId`.
 
 ## Deploy
 ```bash
@@ -39,7 +53,7 @@ firebase deploy --only hosting
 ```
 
 ## Billing
-This MVP does not use Cloud Storage or Cloud Functions. Firebase Storage for new buckets and Cloud Functions require Blaze billing. Keep the project on Spark; no billing is required for the included modules within Firebase free quotas.
+This MVP does not use Cloud Storage or Cloud Functions. Firebase Storage for new buckets and Cloud Functions require the Blaze billing plan. Keep the project on Spark; no billing is needed for the included modules within Firebase free quotas.
 
 ## Security and MVP boundaries
 - Firestore rules enforce organisation access; UI route guards are not a security boundary.
